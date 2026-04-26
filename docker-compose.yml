@@ -1,0 +1,23 @@
+services:
+
+  # Eagle Tailors App — completely standalone
+  # Port 3036 on host (direct IP access: http://145.223.21.39:3036)
+  # MySQL is on the host (not Docker) — --network=host lets us reach it
+  # Zero dependency on astrorattan.com
+
+  app:
+    build: .
+    image: eagle-tailors:latest
+    container_name: eagle_tailors_app
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${PROD_DATABASE_URL}
+      APP_ID: ${PROD_APP_ID}
+      APP_SECRET: ${PROD_APP_SECRET}
+      PORT: ${PROD_PORT:-3036}
+      PUBLIC_URL: ${PROD_PUBLIC_URL}
+      CORS_ORIGINS: ${PROD_CORS_ORIGINS}
+    volumes:
+      - /app/eagle_tailors/uploads:/app/uploads

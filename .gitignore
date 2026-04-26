@@ -1,0 +1,26 @@
+# Secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Reference / legacy code — not part of the project
+existing_refernce/
+
+# Vercel
+.vercel
+
+# Build outputs
+dist/
+node_modules/
+
+# Uploads (local dev only — production uses Docker volume)
+uploads/
+
+# OS / editor
+.DS_Store
+*.log
+
+# Dev tool artifacts
+.playwright-mcp/
+.claude-flow/
+seo-audit-full.png
