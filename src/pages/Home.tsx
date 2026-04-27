@@ -24,6 +24,29 @@ const PHONE_DISPLAY = "+91 98375 28577";
 const ADDRESS = "Sadar Bazar, Meerut Cantt";
 const MAP_QUERY = encodeURIComponent("Eagle Tailors Sadar Bazar Meerut Cantt");
 
+const FOUNDING_YEAR = 1968;
+const YEARS_IN_TRADE = new Date().getFullYear() - FOUNDING_YEAR;
+
+const NUMBER_WORDS = [
+  "zero", "one", "two", "three", "four", "five",
+  "six", "seven", "eight", "nine", "ten",
+] as const;
+
+// "58" → "nearly six decades", "60" → "six decades", "62" → "over six decades"
+function decadesPhrase(years: number): string {
+  const decade = Math.floor(years / 10);
+  const remainder = years % 10;
+  if (remainder === 0) return `${NUMBER_WORDS[decade]} decades`;
+  if (remainder <= 4) return `over ${NUMBER_WORDS[decade]} decades`;
+  return `nearly ${NUMBER_WORDS[decade + 1]} decades`;
+}
+
+// Compact badge label — rounds to nearest decade word, capitalized
+function decadeBadge(years: number): string {
+  const word = NUMBER_WORDS[Math.round(years / 10)];
+  return `${word[0].toUpperCase()}${word.slice(1)} decades`;
+}
+
 type GarmentCard = {
   name: string;
   hindi: string;
@@ -98,7 +121,7 @@ const TESTIMONIALS = [
 ];
 
 const TRUST_BADGES = [
-  { label: "Est. 1985", sub: "Four decades" },
+  { label: `Est. ${FOUNDING_YEAR}`, sub: decadeBadge(YEARS_IN_TRADE) },
   { label: "50,000+", sub: "Garments stitched" },
   { label: "Bespoke", sub: "Hand-tailored" },
   { label: "Family Run", sub: "Father to son" },
@@ -215,7 +238,7 @@ export default function LandingPage() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-500/15 border border-amber-400/40 rounded-full mb-7 backdrop-blur-sm">
               <Star className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
               <span className="text-[11px] font-semibold text-amber-200 tracking-[0.18em] uppercase">
-                Est. 1985 · Sadar Bazar, Meerut
+                Est. {FOUNDING_YEAR} · Sadar Bazar, Meerut
               </span>
             </div>
 
@@ -229,7 +252,7 @@ export default function LandingPage() {
             <p className="mt-7 text-lg md:text-xl text-stone-200 max-w-xl leading-relaxed">
               Bespoke tailoring for the modern gentleman — suits, safari suits,
               shirts and trousers measured, cut and stitched in our
-              Meerut atelier since <span className="text-amber-300 font-semibold">1985</span>.
+              Meerut atelier since <span className="text-amber-300 font-semibold">{FOUNDING_YEAR}</span>.
             </p>
             <p className="mt-2 text-base text-stone-400 italic">
               आधुनिक पुरुष के लिए हस्तनिर्मित बेस्पोक टेलरिंग
@@ -372,22 +395,22 @@ export default function LandingPage() {
             </div>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
               A needle, a thread,<br />
-              and <span className="italic text-amber-400">forty years</span> of trust.
+              and <span className="italic text-amber-400">{decadesPhrase(YEARS_IN_TRADE)}</span> of trust.
             </h2>
             <p className="mt-6 text-stone-300 text-lg leading-relaxed">
-              Eagle Tailors opened its doors in <span className="text-amber-300 font-semibold">1985</span> on a
+              Eagle Tailors opened its doors in <span className="text-amber-300 font-semibold">{FOUNDING_YEAR}</span> on a
               quiet lane of Sadar Bazar, Meerut Cantt. Three generations of fathers,
               officers and gentlemen have walked in for their first suit, their safari set,
               their office shirts — perfectly measured and stitched every time.
             </p>
             <p className="mt-4 text-stone-400 leading-relaxed">
               We do not run sales. We do not chase volume. We measure once, cut once,
-              and stand behind every stitch — because the same hands have been doing it for forty years.
+              and stand behind every stitch — because the same hands have been doing it for {decadesPhrase(YEARS_IN_TRADE)}.
             </p>
 
             <div className="mt-10 grid grid-cols-3 gap-6">
               {[
-                { icon: <Award className="w-6 h-6" />, n: "40+", l: "Years of trade" },
+                { icon: <Award className="w-6 h-6" />, n: `${YEARS_IN_TRADE}+`, l: "Years of trade" },
                 { icon: <Users className="w-6 h-6" />, n: "50K+", l: "Garments stitched" },
                 { icon: <Shield className="w-6 h-6" />, n: "100%", l: "Hand-finished" },
               ].map((s) => (
@@ -408,7 +431,7 @@ export default function LandingPage() {
                 className="w-full h-[520px] object-cover rounded-sm"
               />
               <div className="absolute -bottom-5 -left-5 bg-amber-400 text-stone-950 px-5 py-4 rounded-sm shadow-xl">
-                <div className="text-3xl font-bold tracking-tight">1985</div>
+                <div className="text-3xl font-bold tracking-tight">{FOUNDING_YEAR}</div>
                 <div className="text-[10px] tracking-[0.22em] uppercase font-semibold">since</div>
               </div>
               <div className="absolute -top-4 -right-4 w-24 h-24 border-2 border-amber-400 rounded-sm" />
@@ -610,11 +633,11 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <h4 className="font-bold tracking-[0.12em]">EAGLE TAILORS</h4>
-                  <p className="text-[10px] text-amber-400/80 tracking-[0.2em]">ईगल टेलर्स · 1985</p>
+                  <p className="text-[10px] text-amber-400/80 tracking-[0.2em]">ईगल टेलर्स · {FOUNDING_YEAR}</p>
                 </div>
               </div>
               <p className="text-sm text-stone-400 leading-relaxed">
-                Premium men’s bespoke tailoring since 1985. A family atelier in
+                Premium men’s bespoke tailoring since {FOUNDING_YEAR}. A family atelier in
                 Sadar Bazar, Meerut Cantt — suits, safari suits, shirts and
                 trousers measured, cut and stitched to perfection.
               </p>
