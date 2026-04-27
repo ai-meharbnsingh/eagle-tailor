@@ -58,7 +58,7 @@ const GARMENTS: GarmentCard[] = [
   {
     name: "Two-Piece Suit",
     hindi: "टू-पीस सूट",
-    image: "/showcase/2piece%20suit.jpg",
+    image: "/showcase/2piece-suit.jpg",
     blurb: "Wool · perfectly tailored",
   },
   {
@@ -104,14 +104,14 @@ const PROCESS_STEPS = [
 
 const TESTIMONIALS = [
   {
-    quote: "Got my wedding suit made here. Fit was perfect on the first trial — and three years later it still looks brand new. My father trusted Eagle, and so do I.",
-    name: "Aman Sharma",
-    role: "Regular client · 2023",
-  },
-  {
     quote: "I’ve had every formal suit of mine stitched at Eagle since 2008. They remember my measurements, my preferences, even my fabric tastes. That’s rare.",
     name: "Col. R. K. Verma",
     role: "Regular client · 16 years",
+  },
+  {
+    quote: "Got my wedding suit made here. Fit was perfect on the first trial — and three years later it still looks brand new. My father trusted Eagle, and so do I.",
+    name: "Aman Sharma",
+    role: "Regular client · 2023",
   },
   {
     quote: "Took my dad’s 30-year-old safari suit for alteration. They restored it like it was new. The craftsmanship in this shop is something you don’t see anymore.",
@@ -206,7 +206,8 @@ export default function LandingPage() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-full hover:bg-green-700 transition-all hover:scale-105"
+                aria-label="WhatsApp Eagle Tailors"
+                className="flex items-center gap-2 px-4 min-h-[44px] sm:min-h-0 sm:py-2 bg-green-600 text-white text-sm font-semibold rounded-full hover:bg-green-700 transition-all hover:scale-105"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span className="hidden sm:inline">WhatsApp</span>
@@ -281,7 +282,7 @@ export default function LandingPage() {
             {/* Hero footer mini-stats */}
             <div className="mt-14 grid grid-cols-3 gap-6 max-w-md">
               {[
-                { n: "40+", l: "Years" },
+                { n: `${YEARS_IN_TRADE}+`, l: "Years" },
                 { n: "50K+", l: "Garments" },
                 { n: "100%", l: "Bespoke" },
               ].map((s) => (
@@ -514,16 +515,21 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="flex justify-center gap-2 mt-10">
+          <div className="flex justify-center gap-1 mt-10">
             {TESTIMONIALS.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setTestimonialIdx(i)}
-                aria-label={`Testimonial ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === testimonialIdx ? "bg-amber-500 w-10" : "bg-stone-300 w-3 hover:bg-stone-400"
-                }`}
-              />
+                aria-label={`Show testimonial ${i + 1}`}
+                aria-current={i === testimonialIdx ? "true" : undefined}
+                className="group flex items-center justify-center h-11 w-11 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+              >
+                <span
+                  className={`block h-1.5 rounded-full transition-all ${
+                    i === testimonialIdx ? "bg-amber-500 w-10" : "bg-stone-300 w-3 group-hover:bg-stone-400"
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </div>

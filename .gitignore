@@ -24,3 +24,5 @@ uploads/
 .playwright-mcp/
 .claude-flow/
 seo-audit-full.png
+screenshots/
+scripts/

@@ -1,9 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://eagletailors.com/</loc>
-    <lastmod>2026-04-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-04-27</lastmod>
+    <image:image>
+      <image:loc>https://eagletailors.com/hero-shop.jpg</image:loc>
+      <image:title>Eagle Tailors atelier — Sadar Bazar, Meerut Cantt</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/hero-craft.jpg</image:loc>
+      <image:title>Hand-tailored bespoke suits at Eagle Tailors</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/hero-collection.jpg</image:loc>
+      <image:title>Eagle Tailors bespoke menswear collection</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/hero-master-tailor.jpg</image:loc>
+      <image:title>Master tailor at work — Eagle Tailors, Meerut</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/2piece-suit.jpg</image:loc>
+      <image:title>Bespoke two-piece suit by Eagle Tailors</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/3piecesuit.jpg</image:loc>
+      <image:title>Bespoke three-piece suit by Eagle Tailors</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/safari-suit.webp</image:loc>
+      <image:title>Hand-cut safari suit — Eagle Tailors heritage speciality</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/blazer.webp</image:loc>
+      <image:title>Bespoke blazer by Eagle Tailors</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/shirt.jpg</image:loc>
+      <image:title>Bespoke formal shirt by Eagle Tailors</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/trouser.webp</image:loc>
+      <image:title>Bespoke formal trousers by Eagle Tailors</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eagletailors.com/showcase/craft-detail-scissors.jpg</image:loc>
+      <image:title>Hand-cut tailoring — Eagle Tailors craft</image:title>
+    </image:image>
   </url>
 </urlset>

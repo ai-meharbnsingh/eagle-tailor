@@ -39,7 +39,7 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": ["LocalBusiness", "ClothingStore"],
+          "@type": ["ClothingStore", "ProfessionalService"],
           "@id": "https://eagletailors.com/#business",
           "name": "Eagle Tailors",
           "alternateName": "ईगल टेलर्स",
@@ -47,7 +47,7 @@
           "url": "https://eagletailors.com",
           "telephone": "+919837528577",
           "foundingDate": "1968",
-          "image": "https://eagletailors.com/eagle-tailors-logo.png",
+          "image": "https://eagletailors.com/hero-shop.jpg",
           "logo": "https://eagletailors.com/eagle-tailors-logo.png",
           "address": {
             "@type": "PostalAddress",
@@ -56,6 +56,11 @@
             "addressRegion": "Uttar Pradesh",
             "postalCode": "250001",
             "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "28.99526",
+            "longitude": "77.71432"
           },
           "openingHoursSpecification": [
             {
@@ -66,39 +71,117 @@
             }
           ],
           "hasMap": "https://www.google.com/maps/search/?api=1&query=Eagle+Tailors+Sadar+Bazar+Meerut+Cantt",
+          "sameAs": [
+            "https://www.google.com/maps/search/?api=1&query=Eagle+Tailors+Sadar+Bazar+Meerut+Cantt"
+          ],
           "currenciesAccepted": "INR",
           "paymentAccepted": "Cash, UPI",
           "priceRange": "₹₹",
           "areaServed": { "@type": "City", "name": "Meerut" },
-          "review": [
+          "knowsLanguage": ["en", "hi"],
+          "makesOffer": [
+            { "@type": "Offer", "itemOffered": { "@id": "https://eagletailors.com/#service-two-piece-suit" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://eagletailors.com/#service-three-piece-suit" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://eagletailors.com/#service-safari-suit" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://eagletailors.com/#service-shirts" } },
+            { "@type": "Offer", "itemOffered": { "@id": "https://eagletailors.com/#service-trousers" } }
+          ]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://eagletailors.com/#service-two-piece-suit",
+          "name": "Bespoke Two-Piece Suit",
+          "serviceType": "Bespoke Tailoring",
+          "description": "Hand-cut bespoke two-piece suit — jacket and trousers — made to measure at Eagle Tailors, Meerut Cantt.",
+          "provider": { "@id": "https://eagletailors.com/#business" },
+          "areaServed": { "@type": "City", "name": "Meerut" },
+          "url": "https://eagletailors.com/"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://eagletailors.com/#service-three-piece-suit",
+          "name": "Bespoke Three-Piece Suit",
+          "serviceType": "Bespoke Tailoring",
+          "description": "Bespoke three-piece suit — jacket, waistcoat, and trousers — hand-cut and stitched to measure.",
+          "provider": { "@id": "https://eagletailors.com/#business" },
+          "areaServed": { "@type": "City", "name": "Meerut" },
+          "url": "https://eagletailors.com/"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://eagletailors.com/#service-safari-suit",
+          "name": "Bespoke Safari Suit",
+          "serviceType": "Bespoke Tailoring",
+          "description": "Custom safari suit tailored to measure in cotton — a heritage speciality of Eagle Tailors since 1968.",
+          "provider": { "@id": "https://eagletailors.com/#business" },
+          "areaServed": { "@type": "City", "name": "Meerut" },
+          "url": "https://eagletailors.com/"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://eagletailors.com/#service-shirts",
+          "name": "Bespoke Shirts",
+          "serviceType": "Bespoke Tailoring",
+          "description": "Made-to-measure formal and casual shirts stitched to your exact measurements, including French-cuff options.",
+          "provider": { "@id": "https://eagletailors.com/#business" },
+          "areaServed": { "@type": "City", "name": "Meerut" },
+          "url": "https://eagletailors.com/"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://eagletailors.com/#service-trousers",
+          "name": "Bespoke Trousers",
+          "serviceType": "Bespoke Tailoring",
+          "description": "Custom trousers cut and stitched to measure in a range of fabrics.",
+          "provider": { "@id": "https://eagletailors.com/#business" },
+          "areaServed": { "@type": "City", "name": "Meerut" },
+          "url": "https://eagletailors.com/"
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://eagletailors.com/#faq",
+          "mainEntity": [
             {
-              "@type": "Review",
-              "reviewBody": "Got my wedding suit made here. Fit was perfect on the first trial — and three years later it still looks brand new. My father trusted Eagle, and so do I.",
-              "author": { "@type": "Person", "name": "Aman Sharma" },
-              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-              "datePublished": "2023-01-01"
+              "@type": "Question",
+              "name": "How long does a bespoke suit take at Eagle Tailors?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Lead time depends on the garment, the fabric, and the current workload at the atelier. Please WhatsApp or call +91 98375 28577 before visiting so we can confirm a realistic timeline for your order."
+              }
             },
             {
-              "@type": "Review",
-              "reviewBody": "I've had every formal suit of mine stitched at Eagle since 2008. They remember my measurements, my preferences, even my fabric tastes. That's rare.",
-              "author": { "@type": "Person", "name": "Col. R. K. Verma" },
-              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-              "datePublished": "2024-01-01"
+              "@type": "Question",
+              "name": "Do you do alterations and garment restoration?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. We restore vintage suits and do alterations on garments not stitched at Eagle Tailors, subject to the condition of the fabric."
+              }
             },
             {
-              "@type": "Review",
-              "reviewBody": "Took my dad's 30-year-old safari suit for alteration. They restored it like it was new. The craftsmanship in this shop is something you don't see anymore.",
-              "author": { "@type": "Person", "name": "Rohit Bansal" },
-              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-              "datePublished": "2024-06-01"
+              "@type": "Question",
+              "name": "When is Eagle Tailors open?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Tuesday to Sunday, 10:00 AM to 8:00 PM. Closed on Mondays."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I book a fitting?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Walk in to Sadar Bazar, Meerut Cantt during open hours, or call/WhatsApp +91 98375 28577 to confirm a slot before visiting."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What payment methods do you accept?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Cash and UPI."
+              }
             }
-          ],
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5",
-            "reviewCount": "3",
-            "bestRating": "5"
-          }
+          ]
         },
         {
           "@type": "WebSite",
@@ -113,6 +196,41 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <noscript>
+      <article style="font-family:Georgia,serif;max-width:760px;margin:2rem auto;padding:0 1.25rem;line-height:1.6;color:#1c1917">
+        <header>
+          <h1 style="font-size:2rem;margin:0 0 0.5rem">Eagle Tailors — Bespoke Men's Tailor in Meerut Cantt</h1>
+          <p style="color:#a16207;text-transform:uppercase;letter-spacing:0.18em;font-size:0.75rem;margin:0">Est. 1968 · Sadar Bazar, Meerut Cantt</p>
+        </header>
+
+        <p>Eagle Tailors is a family-run atelier founded in 1968 offering hand-cut, hand-stitched bespoke menswear — two-piece suits, three-piece suits, safari suits, blazers, formal shirts and trousers. Three generations of fathers, officers and gentlemen have walked in for their first suit, their safari set, their office shirts — perfectly measured and stitched every time.</p>
+
+        <h2>Services</h2>
+        <ul>
+          <li><strong>Bespoke Two-Piece Suit</strong> — Wool, hand-cut, hand-finished.</li>
+          <li><strong>Bespoke Three-Piece Suit</strong> — Structured, with brass buttons.</li>
+          <li><strong>Safari Suit</strong> — A heritage speciality, hand-cut in cotton.</li>
+          <li><strong>Blazers</strong> — Single- and double-breasted.</li>
+          <li><strong>Formal Shirts</strong> — Cotton, including French cuff.</li>
+          <li><strong>Trousers</strong> — Made to measure in a range of fabrics.</li>
+          <li><strong>Alterations &amp; Restoration</strong> — Including vintage garments and pieces not stitched at Eagle Tailors.</li>
+        </ul>
+
+        <h2>Visit</h2>
+        <address style="font-style:normal">
+          <strong>Eagle Tailors</strong> (ईगल टेलर्स)<br />
+          Sadar Bazar, Meerut Cantt<br />
+          Uttar Pradesh 250001, India<br />
+          Phone &amp; WhatsApp: <a href="tel:+919837528577">+91 98375 28577</a><br />
+          Open: Tuesday – Sunday, 10:00 AM – 8:00 PM. Closed Mondays.<br />
+          Payment: Cash, UPI.
+        </address>
+
+        <p style="margin-top:2rem;font-size:0.9rem;color:#57534e">This page requires JavaScript for the full interactive experience. <a href="https://wa.me/919837528577">WhatsApp us</a> or <a href="tel:+919837528577">call +91 98375 28577</a> to book a fitting.</p>
+      </article>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
