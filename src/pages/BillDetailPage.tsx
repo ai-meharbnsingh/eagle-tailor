@@ -23,6 +23,9 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  Camera,
+  Upload,
+  Search,
 } from "lucide-react";
 
 const API_BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
@@ -58,6 +61,12 @@ export default function BillDetailPage() {
   const [editAdvance, setEditAdvance] = useState("");
   const [editDeliveryDate, setEditDeliveryDate] = useState("");
   const [editRemarks, setEditRemarks] = useState("");
+  const [editBookId, setEditBookId] = useState<number | null>(null);
+  const [editFolio, setEditFolio] = useState("");
+  const [editCustomerId, setEditCustomerId] = useState<number | null>(null);
+  const [editCustomerLabel, setEditCustomerLabel] = useState("");
+  const [showCustomerSearch, setShowCustomerSearch] = useState(false);
+  const [customerQuery, setCustomerQuery] = useState("");
 
   const [showAddPayment, setShowAddPayment] = useState(false);
   const [payAmount, setPayAmount] = useState("");
@@ -70,6 +79,7 @@ export default function BillDetailPage() {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [uploadingImg, setUploadingImg] = useState(false);
   const addImgRef = useRef<HTMLInputElement>(null);
+  const editImgRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -84,11 +94,40 @@ export default function BillDetailPage() {
     { enabled: isAuthenticated && isValidId },
   );
 
+  const { data: books } = trpc.book.list.useQuery(undefined, {
+    enabled: isAuthenticated && editing,
+  });
+
+  const editFolioNum = parseInt(editFolio);
+  const folioChanged =
+    !!bill &&
+    (editBookId !== bill.bookId || editFolioNum !== bill.folioNumber);
+  const { data: editFolioTaken } = trpc.book.checkFolio.useQuery(
+    { bookId: editBookId ?? 0, folioNumber: editFolioNum },
+    {
+      enabled:
+        editing &&
+        !!editBookId &&
+        !isNaN(editFolioNum) &&
+        editFolioNum > 0 &&
+        folioChanged,
+    },
+  );
+
+  const { data: customerResults } = trpc.customer.search.useQuery(
+    { query: customerQuery },
+    { enabled: editing && showCustomerSearch && customerQuery.length > 1 },
+  );
+
   const updateBill = trpc.bill.update.useMutation({
     onSuccess: () => {
       utils.bill.byId.invalidate({ id: numericId });
       utils.dashboard.stats.invalidate();
+      utils.book.bills.invalidate();
+      utils.bill.byCustomer.invalidate();
       setEditing(false);
+      setShowCustomerSearch(false);
+      setCustomerQuery("");
     },
     onError: (err) => {
       alert(err.message || "Failed to update bill");
@@ -152,6 +191,12 @@ export default function BillDetailPage() {
       bill.deliveryDate ? new Date(bill.deliveryDate).toISOString().slice(0, 10) : "",
     );
     setEditRemarks(bill.remarks ?? "");
+    setEditBookId(bill.bookId);
+    setEditFolio(String(bill.folioNumber));
+    setEditCustomerId(bill.customerId);
+    setEditCustomerLabel(bill.customer?.name ?? "");
+    setShowCustomerSearch(false);
+    setCustomerQuery("");
     setEditing(true);
   };
 
@@ -390,6 +435,144 @@ export default function BillDetailPage() {
           {/* Edit Form */}
           {editing ? (
             <div className="space-y-4">
+              {/* Book + Folio (move bill / fix wrong folio) */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-stone-500 uppercase block mb-1">
+                    Book · बही
+                  </label>
+                  <select
+                    value={editBookId ?? ""}
+                    onChange={(e) => setEditBookId(parseInt(e.target.value) || null)}
+                    className="w-full p-3 border-2 border-stone-300 bg-white outline-none focus:border-stone-900"
+                  >
+                    {books?.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name}{b.isCurrent ? " (current)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-stone-500 uppercase block mb-1">
+                    Folio Number · फोलियो
+                  </label>
+                  <input
+                    type="number"
+                    value={editFolio}
+                    onChange={(e) => setEditFolio(e.target.value)}
+                    className={`w-full p-3 border-2 outline-none ${editFolioTaken ? "border-red-500 focus:border-red-500" : "border-stone-300 focus:border-stone-900"}`}
+                  />
+                  {editFolioTaken && (
+                    <p className="text-xs text-red-600 mt-1 font-semibold">
+                      ⚠ Folio #{editFolio} already used in selected book
+                    </p>
+                  )}
+                  {folioChanged && !editFolioTaken && editFolio && (
+                    <p className="text-xs text-green-600 mt-1">✓ Available</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Customer (fix wrong customer assignment) */}
+              <div>
+                <label className="text-xs font-bold text-stone-500 uppercase block mb-1">
+                  Customer · ग्राहक
+                </label>
+                {!showCustomerSearch ? (
+                  <div className="flex items-center justify-between p-3 bg-stone-50 border-2 border-stone-200">
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4 text-stone-400" />
+                      <span className="text-sm font-semibold text-stone-900">{editCustomerLabel}</span>
+                      {editCustomerId !== bill.customerId && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 bg-amber-200 text-stone-900">CHANGED</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => setShowCustomerSearch(true)}
+                      className="text-xs font-semibold text-stone-600 hover:text-stone-900 underline"
+                    >
+                      Change
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+                      <input
+                        type="text"
+                        value={customerQuery}
+                        onChange={(e) => setCustomerQuery(e.target.value)}
+                        placeholder="Search by phone or name..."
+                        className="w-full pl-10 pr-4 py-3 border-2 border-stone-300 bg-white outline-none focus:border-stone-900 text-sm"
+                      />
+                    </div>
+                    {customerResults && customerResults.length > 0 && (
+                      <div className="space-y-1 max-h-48 overflow-y-auto">
+                        {customerResults.map((c) => (
+                          <button
+                            key={c.id}
+                            onClick={() => {
+                              setEditCustomerId(c.id);
+                              setEditCustomerLabel(c.name);
+                              setShowCustomerSearch(false);
+                              setCustomerQuery("");
+                            }}
+                            className="w-full flex items-center gap-2 p-2 border-2 border-stone-200 hover:border-stone-900 hover:bg-stone-50 text-left transition-colors"
+                          >
+                            <User className="w-4 h-4 text-stone-400" />
+                            <div>
+                              <p className="text-sm font-semibold text-stone-900">{c.name}</p>
+                              <p className="text-xs text-stone-500">{c.phones?.[0]?.phone}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    <button
+                      onClick={() => { setShowCustomerSearch(false); setCustomerQuery(""); }}
+                      className="text-xs text-stone-500 hover:text-stone-900 underline"
+                    >
+                      Cancel customer change
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Photos (camera + gallery, multiple) */}
+              <div>
+                <label className="text-xs font-bold text-stone-500 uppercase block mb-1">
+                  Add Photos · फोटो जोड़ें
+                </label>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { if (editImgRef.current) { editImgRef.current.capture = "environment"; editImgRef.current.click(); } }}
+                    disabled={uploadingImg}
+                    className="flex-1 py-2.5 bg-stone-900 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-stone-800 transition-colors disabled:opacity-50"
+                  >
+                    {uploadingImg ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
+                    Camera
+                  </button>
+                  <button
+                    onClick={() => { if (editImgRef.current) { editImgRef.current.capture = ""; editImgRef.current.click(); } }}
+                    disabled={uploadingImg}
+                    className="flex-1 py-2.5 border-2 border-stone-900 text-stone-900 font-semibold text-sm flex items-center justify-center gap-2 hover:bg-stone-100 transition-colors disabled:opacity-50"
+                  >
+                    <Upload className="w-4 h-4" />
+                    Gallery
+                  </button>
+                  <input
+                    ref={editImgRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => { handleAddImages(e.target.files); e.target.value = ""; }}
+                  />
+                </div>
+                <p className="text-[11px] text-stone-400 mt-1">Photos appear in the gallery above. Tap a photo's trash icon to remove it.</p>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-bold text-stone-500 uppercase block mb-1">
@@ -438,16 +621,27 @@ export default function BillDetailPage() {
               </div>
               <div className="flex gap-3">
                 <button
-                  onClick={() =>
+                  onClick={() => {
+                    if (folioChanged && editFolioTaken) {
+                      alert(`Folio #${editFolio} is already used in the selected book.`);
+                      return;
+                    }
+                    if (!editBookId || !editFolioNum || editFolioNum <= 0) {
+                      alert("Please select a book and enter a valid folio number.");
+                      return;
+                    }
                     updateBill.mutate({
                       id: bill.id,
                       totalAmount: parseFloat(editTotal) || 0,
                       advancePaid: parseFloat(editAdvance) || 0,
                       deliveryDate: editDeliveryDate || undefined,
                       remarks: editRemarks || undefined,
-                    })
-                  }
-                  disabled={updateBill.isPending}
+                      bookId: editBookId,
+                      folioNumber: editFolioNum,
+                      customerId: editCustomerId ?? undefined,
+                    });
+                  }}
+                  disabled={updateBill.isPending || (folioChanged && !!editFolioTaken)}
                   className="flex-1 py-3 bg-stone-900 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-stone-800 transition-colors disabled:opacity-50"
                 >
                   <Check className="w-4 h-4" />

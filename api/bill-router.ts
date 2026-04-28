@@ -72,9 +72,12 @@ export const billRouter = createRouter({
         deliveryDate: z.string().optional(),
         actualDeliveryDate: z.string().optional(),
         remarks: z.string().optional(),
+        bookId: z.number().int().positive().optional(),
+        folioNumber: z.number().int().positive().optional(),
+        customerId: z.number().int().positive().optional(),
       }),
     )
-    .mutation(({ input }: { input: { id: number; status?: string; totalAmount?: number; advancePaid?: number; deliveryDate?: string; actualDeliveryDate?: string; remarks?: string } }) =>
+    .mutation(({ input }: { input: { id: number; status?: string; totalAmount?: number; advancePaid?: number; deliveryDate?: string; actualDeliveryDate?: string; remarks?: string; bookId?: number; folioNumber?: number; customerId?: number } }) =>
       updateBill(input.id, {
         status: input.status,
         totalAmount: input.totalAmount,
@@ -82,6 +85,9 @@ export const billRouter = createRouter({
         deliveryDate: input.deliveryDate,
         actualDeliveryDate: input.actualDeliveryDate,
         remarks: input.remarks,
+        bookId: input.bookId,
+        folioNumber: input.folioNumber,
+        customerId: input.customerId,
       }),
     ),
 

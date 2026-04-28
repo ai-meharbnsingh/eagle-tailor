@@ -157,6 +157,9 @@ export async function updateBill(
     deliveryDate?: string;
     actualDeliveryDate?: string;
     remarks?: string;
+    bookId?: number;
+    folioNumber?: number;
+    customerId?: number;
   },
 ) {
   const db = getDb();
@@ -179,6 +182,28 @@ export async function updateBill(
     updates.totalAmount = String(total);
     updates.advancePaid = String(advance);
     updates.balanceDue = String(balance);
+  }
+
+  // Move bill to a different book / change folio number — validate uniqueness
+  const newBookId = data.bookId ?? existing.bookId;
+  const newFolio = data.folioNumber ?? existing.folioNumber;
+  const bookOrFolioChanged =
+    (data.bookId !== undefined && data.bookId !== existing.bookId) ||
+    (data.folioNumber !== undefined && data.folioNumber !== existing.folioNumber);
+
+  if (bookOrFolioChanged) {
+    const conflict = await db.query.bills.findFirst({
+      where: and(eq(bills.bookId, newBookId), eq(bills.folioNumber, newFolio)),
+    });
+    if (conflict && conflict.id !== id) {
+      throw new Error(`Folio #${newFolio} is already taken in the selected book`);
+    }
+    updates.bookId = newBookId;
+    updates.folioNumber = newFolio;
+  }
+
+  if (data.customerId !== undefined && data.customerId !== existing.customerId) {
+    updates.customerId = data.customerId;
   }
 
   await db
